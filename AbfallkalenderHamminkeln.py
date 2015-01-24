@@ -27,6 +27,7 @@ den Kalender importiert werden.
 
 
 import sys
+import uuid
 
 # tested with icalendar-3.8.4 from http://icalendar.readthedocs.org
 from icalendar import Calendar, Event
@@ -47,7 +48,10 @@ def main():
         for row in reader:
             #print(row)
             try:
-                datum = datetime.strptime(row[1],'%d.%m.%y')
+                try:
+                    datum = datetime.strptime(row[1],'%d.%m.%y')
+                except:
+                    datum = datetime.strptime(row[1],'%d.%m.%Y')
                 #print(datum)
                 event = Event()
                 event.add('dtstamp',datetime.now())
@@ -55,6 +59,8 @@ def main():
                 # ownCloud is broken, it needs a dtend property
                 event.add('dtend',(datum + timedelta(days=1)).date())
                 event.add('summary','Müll ' + row[3])
+                # rfc5545 corrects the specification to require uid
+                event.add('uid',uuid.uuid4().hex);
                 cal.add_component(event)
             except:
                 pass
