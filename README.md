@@ -4,23 +4,21 @@ Abfallkalender
 Konvertiert eine csv Datei (Onlinekalender Stadt Hamminkeln) in eine iCalender Datei
 
 
-Auf http://www.abfallkalender.wastewatcher.de die eigene Straße einstellen und
-eine Exceldatei erzeugen lassen. Diese Exceldatei mit Hilfe von Excel/Calc in eine
-csv Datei exportieren (UTF-8 Textkodierung).
+Auf https://www.mywastewatcher.de/abfallkalender/ die eigene Straße einstellen und
+eine csv-Datei erzeugen lassen (Abfallkalender_Hamminkeln.csv).
 
 Die csv-Datei beginnt wie folgt:
 
 ```
-Abfuhrtermine
-Bz,Abfuhrtermin,Tag,Fraktion,Bemerkung
-5,05.01.15,Mo,gelb,
-5,07.01.15,Mi,Schadstoff,
+Farbe;Abfallart;Abfuhrtag;Wochentag;V;Bemerkung
+rot;SC;04.01.2017;Mittwoch;;
+grau;RA;05.01.2017;Donnerstag;;
 ```
 
 Aufruf des Programmes:
 
-    python AbfallkalenderHamminkeln.py gridAbfuhrtermine.csv
+    python AbfallkalenderHamminkeln.py Abfallkalender_Hamminkeln.csv
 
-es wird die Datei `gridAbfuhrtermine.csv.ics` erzeugt.
+es wird die Datei `Abfallkalender_Hamminkeln.csv.ics` erzeugt.
 Diese Datei kann auf eine ownCloud hochgeladen werden und dann per Klick in
 den Kalender importiert werden.

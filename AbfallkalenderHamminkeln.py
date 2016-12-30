@@ -8,15 +8,16 @@ Created on Sat Dec 13 12:27:48 2014
 """
 Dieses Programm erzeugt eine iCalendar Datei, die die Müll-Abholtage enthält.
 
-Auf http://www.abfallkalender.wastewatcher.de die eigene Straße einstellen und
-eine Exceldatei erzeugen lassen. Diese Exceldatei mit Hilfe von Excel in eine
-csv Datei exportieren (UTF-8 Textkodierung).
+Auf https://www.mywastewatcher.de/abfallkalender/ die eigene Straße einstellen und
+eine csv-Datei erzeugen lassen (Abfallkalender_Hamminkeln.csv).
 
 Die csv-Datei beginnt wie folgt:
-Abfuhrtermine,,,,
-Bz,Abfuhrtermin,Tag,Fraktion,Bemerkung
-5,05.01.15,Mo,gelb,
-5,07.01.15,Mi,Schadstoff,
+
+```
+Farbe;Abfallart;Abfuhrtag;Wochentag;V;Bemerkung
+rot;SC;04.01.2017;Mittwoch;;
+grau;RA;05.01.2017;Donnerstag;;
+```
 
 Aufruf des Programmes:
 python AbfallkalenderHamminkeln.py gridAbfuhrtermine.csv
@@ -42,23 +43,23 @@ def main():
     cal.add('version','2.0')
     cal.add('prodid','-//Ingenieurbüro Held//AbfallkalenderHamminkeln_Python_import//DE')
 
-    f = open(sys.argv[1], 'rt')
+    f = open(sys.argv[1], mode='rt', encoding='iso-8859-1')
     try:
-        reader = csv.reader(f)
+        reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
         for row in reader:
             #print(row)
             try:
                 try:
-                    datum = datetime.strptime(row[1],'%d.%m.%y')
+                    datum = datetime.strptime(row[2],'%d.%m.%y')
                 except:
-                    datum = datetime.strptime(row[1],'%d.%m.%Y')
+                    datum = datetime.strptime(row[2],'%d.%m.%Y')
                 #print(datum)
                 event = Event()
                 event.add('dtstamp',datetime.now())
                 event.add('dtstart',datum.date())
                 # ownCloud is broken, it needs a dtend property
                 event.add('dtend',(datum + timedelta(days=1)).date())
-                event.add('summary','Müll ' + row[3])
+                event.add('summary','Müll ' + row[0])
                 # rfc5545 corrects the specification to require uid
                 event.add('uid',uuid.uuid4().hex);
                 cal.add_component(event)
