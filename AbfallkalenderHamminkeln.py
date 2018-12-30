@@ -62,6 +62,7 @@ def main():
                 event.add('summary','Müll ' + row[0])
                 # rfc5545 corrects the specification to require uid
                 event.add('uid',uuid.uuid4().hex);
+                event.add('description',row[5].strip())
                 cal.add_component(event)
             except:
                 pass
